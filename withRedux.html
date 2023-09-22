@@ -1,11 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script>
-
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js">
     </script>
 </head>
 <body>
@@ -19,6 +19,24 @@
     <div id="green"></div>
     <div id="blue"></div>
     <script>
+       
+        //store를 생성하기 위해서는 리듀서 함수가 필요하다. 
+        //인자는 원래 상태값 state와 action.
+        function reducer(state, action){
+            if(state=== undefined){
+                return {color:'yellow'} // 초기 state값.
+            }
+        }
+
+        var store = Redux.createStore();
+        //store는 전역변수.
+        console.log(store.getState())
+
+
+
+
+
+
         function red(){
             document.querySelector('#red').innerHTML =  `
                 <div class="container" id="component_red">
@@ -32,6 +50,7 @@
             `
         }
         red();
+
         // function green(){
         //     document.querySelector('#green').innerHTML =  `
         //         <div class="container" id="component_green">
