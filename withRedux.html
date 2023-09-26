@@ -25,14 +25,26 @@
         //인자는 원래 상태값 state와 action.
         
         function reducer(state, action){
+            console.log(state,action)
             if(state === undefined){
                 return {color:'yellow'} // 초기 state값.
             }
+            var newState;
+            if(action.type==='CHANGE_COLOR'){
+                newState=Object.assign({},state,{color:'red'})
+        
+            }
+            return newState;
+            
+            //state자체를 리턴하기보다는, 변경된 state를 복제하고, 복제한 것을 return하는것이 좋음.
+            //그것이 시간여행에 도움을 준다. undo, redo 등 예측가능하도록. 
+            //immutability 공부하기.
+            //reducer의 리턴값이 새로운 state의 값이 된ㄷ.
         }
 
         var store = Redux.createStore(reducer);
         //store는 전역변수.
-        console.log(store.getState())
+       
 
         function red(){
             var state = store.getState();
@@ -40,9 +52,7 @@
                 <div class="container" id="component_red" style="background-color:${state.color}">
                     <h1>red</h1>
                     <input type="button" value="fire" onclick="
-                    document.querySelector('#component_red').style.backgroundColor = 'red';
-                    document.querySelector('#component_green').style.backgroundColor = 'red';
-                    document.querySelector('#component_blue').style.backgroundColor = 'red';
+                        store.dispatch({type:'CHANGE_COLOR', color:'red'})
                     "></input>
                 </div>
             `
