@@ -42,7 +42,8 @@
             //reducer의 리턴값이 새로운 state의 값이 된다.
         }
 
-        var store = Redux.createStore(reducer);
+        var store = Redux.createStore(reducer,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
         //store는 전역변수.
        
 
