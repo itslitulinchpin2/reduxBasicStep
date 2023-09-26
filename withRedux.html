@@ -58,7 +58,7 @@
                 </div>
             `
         }
-        store.subscribe(red);
+        //store.subscribe(red);
         //subscribe에 render를 등록하면 state가 바뀔 때마다 render가 호출되어 UI가 바뀜.
         red();
 
@@ -73,7 +73,7 @@
                 </div>
             `
         }
-        store.subscribe(blue)
+        //store.subscribe(blue)
         blue();
 
         function green(){
@@ -87,8 +87,12 @@
                 </div>
             `
         }
-        store.subscribe(green)
+        //store.subscribe(green)
         green();
+
+        store.subscribe(red)
+        store.subscribe(blue)
+        store.subscribe(green)
         
        
     </script>
