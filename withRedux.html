@@ -17,8 +17,8 @@
         }
     </style>
     <div id="red"></div>
-    <div id="green"></div>
     <div id="blue"></div>
+    <div id="green"></div>
     <script>
        
         //store를 생성하기 위해서는 리듀서 함수가 필요하다. 
@@ -31,15 +31,15 @@
             }
             var newState;
             if(action.type==='CHANGE_COLOR'){
-                newState=Object.assign({},state,{color:'red'})
-        
+                newState=Object.assign({},state,{color:action.color})
+                //복제를 해야 리덕스의 장점이 발휘됨
             }
             return newState;
             
             //state자체를 리턴하기보다는, 변경된 state를 복제하고, 복제한 것을 return하는것이 좋음.
             //그것이 시간여행에 도움을 준다. undo, redo 등 예측가능하도록. 
             //immutability 공부하기.
-            //reducer의 리턴값이 새로운 state의 값이 된ㄷ.
+            //reducer의 리턴값이 새로운 state의 값이 된다.
         }
 
         var store = Redux.createStore(reducer);
@@ -57,35 +57,39 @@
                 </div>
             `
         }
+        store.subscribe(red);
+        //subscribe에 render를 등록하면 state가 바뀔 때마다 render가 호출되어 UI가 바뀜.
         red();
 
-        // function green(){
-        //     document.querySelector('#green').innerHTML =  `
-        //         <div class="container" id="component_green">
-        //             <h1>green</h1>
-        //             <input type="button" value="fire" onclick="
-        //             document.querySelector('#component_green').style.backgroundColor = 'green';
-        //             document.querySelector('#component_red').style.backgroundColor = 'green';
-        //             document.querySelector('#component_blue').style.backgroundColor = 'green';
-        //             "></input>
-        //         </div>
-        //     `
-        // }
-        // green();
-        // function blue(){
-        //     document.querySelector('#blue').innerHTML =  `
-        //         <div class="container" id="component_blue">
-        //             <h1>blue</h1>
-        //             <input type="button" value="fire" onclick="
-        //             document.querySelector('#component_green').style.backgroundColor = 'blue';
-        //             document.querySelector('#component_red').style.backgroundColor = 'blue';
-        //             document.querySelector('#component_blue').style.backgroundColor = 'blue';
-        //             "></input>
-        //         </div>
-        //     `
+        function blue(){
+            var state = store.getState();
+            document.querySelector('#blue').innerHTML =  `
+                <div class="container" id="component_blue" style="background-color:${state.color}">
+                    <h1>blue</h1>
+                    <input type="button" value="fire" onclick="
+                        store.dispatch({type:'CHANGE_COLOR', color:'blue'})
+                    "></input>
+                </div>
+            `
+        }
+        store.subscribe(blue)
+        blue();
 
-        // }
-        // blue();
+        function green(){
+            var state = store.getState();
+            document.querySelector('#green').innerHTML =  `
+                <div class="container" id="component_green" style="background-color:${state.color}">
+                    <h1>green</h1>
+                    <input type="button" value="fire" onclick="
+                        store.dispatch({type:'CHANGE_COLOR', color:'green'})
+                    "></input>
+                </div>
+            `
+        }
+        store.subscribe(green)
+        green();
+        
+       
     </script>
 </body>
 </html>
