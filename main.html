@@ -34,9 +34,15 @@
             while(i<state.contents.length){
                 litags=litags+
                 `<li> 
-                    <a href="${state.contents[i].id}">
-                        ${state.contents[i].title}</a>
-
+                    <a 
+                    onclick="
+                        event.preventDefault(); 
+                        var action={type:'SELECT',id:${state.contents[i].id}}
+                        store.dispatch(action);
+                    "
+                    href="${state.contents[i].id}">
+                        ${state.contents[i].title}
+                    </a>
                  </li>`
                 i=i+1
             }
@@ -70,15 +76,25 @@
             `
         }
 
-        function reducer(state,article){
+        function reducer(state,action){
+            
             if (state===undefined){
                 return {
+                selected_id:null,
                  contents:[
                     {id:1, title:'HTML', desc:'HTML is ...'},
                     {id:2, title:'CSS', desc:'CSS is ...'}
                 ]   
                 } // 객체들의 배열
             } //content를 기반으로 글목록을 표현하자. content는 초기값으로 주자.
+            var newState;
+            if (action.type==='SELECT'){
+                newState=Object.assign({},state,{selected_id:action.id})
+                
+            }
+            console.log(state,newState)
+            return newState;
+
         }
         var store = Redux.createStore(reducer);
         //store는 전역변수
