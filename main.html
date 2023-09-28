@@ -63,13 +63,18 @@
                 <li><a 
                     onclick="
                     event.preventDefault();
-                    
-
+                    store.dispatch({type:'CHANGE_MODE', mode:'create'})
                     "    
                     href="/create">CREATE
                     </a>
                 </li>
-                <li><input type="button" value="DELETE"></input></li>
+                <li><input type="button" value="DELETE"
+                    onclick = "store.dispatch(
+                        {type:'DELETE'}
+                    );
+                    
+                    
+                    "></input></li>
             </ul>
             `
         }
@@ -110,8 +115,6 @@
                         title:title,
                         desc:desc }
                     )
-
-
                     ">
                         <p><input type="text" name="title" placeholder="title"></p>
                         <p><textarea name="desc" placeholder="description"></textarea></p>
@@ -119,16 +122,21 @@
                         </form>
                 </article>
                 `
-
-
+            } else if (state.mode ==='welcome'){
+                document.querySelector('#article').innerHTML=`
+                <article> 
+                    <h2>Welcome</h2>
+                    Hello, Redux!
+                </article>
+                `
             }
         }
 
         function reducer(state,action){
-            
+            console.log(state,action)
             if (state===undefined){
                 return {
-                mode:'create',
+                mode:'welcome',
                 max_id:2,
                 selected_id:1,
                  contents:[
@@ -139,9 +147,8 @@
             } //content를 기반으로 글목록을 표현하자. content는 초기값으로 주자.
             var newState;
             if (action.type==='SELECT'){
-                newState=Object.assign({},state,{selected_id:action.id})
-            }
-            else if (action.type==='CREATE'){
+                newState=Object.assign({},state,{selected_id:action.id, mode:'read'})
+            } else if (action.type==='CREATE'){
                 var newContents = state.contents.concat()
                 var newMaxId=state.max_id+1
                 newContents.push({id:newMaxId, title:action.title,desc:action.desc })
@@ -149,6 +156,24 @@
                     contents:newContents,
                     mode:'read',
                     max_id:newMaxId})
+            } else if (action.type==='DELETE'){
+                var i=0;
+                var newContents=[]
+                while(i<state.contents.length){
+                    if(state.selected_id!=state.contents[i].id){
+                        newContents.push(state.contents[i])
+                    }
+                    i=i+1
+                }
+                newState=Object.assign({},state,{
+                    contents:newContents,
+                    max_id:state.max_id-1,
+                    mode:'welcome'
+                })
+            } else if (action.type==='CHANGE_MODE'){
+                newState=Object.assign({},state,{
+                    mode:'create'
+                })
             }
             console.log(state,newState)
             return newState;
@@ -157,11 +182,9 @@
         var store = Redux.createStore(reducer);
         //store는 전역변수
         //초기 값은 바로 UI에 표시가 된다.
+        
         store.subscribe(toc);
         store.subscribe(article);
-
-
-
 
         subject();
         toc();
