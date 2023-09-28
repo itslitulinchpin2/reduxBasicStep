@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"?></script>
+        
+    </script>
 </head>
 <body>
 
@@ -21,20 +24,32 @@
              </header>
             `
         }
-        subject();
+        
         //재활용 가능하도록 함수화, 즉 부품화 함.
 
-        function TOC(){
+        function toc(){
+            var state = store.getState();
+            var i=0;
+            var litags=''
+            while(i<state.contents.length){
+                litags=litags+
+                `<li> 
+                    <a href="${state.contents[i].id}">
+                        ${state.contents[i].title}</a>
+
+                 </li>`
+                i=i+1
+            }
+
             document.querySelector('#toc').innerHTML=`
             <nav>
                 <ol>
-                    <li><a href="1.HTML">HTML</a></li>
-                    <li><a href="2.CSS">CSS</a></li>
+                    ${litags}
                 </ol>
             </nav>
             `
         }
-        TOC();
+      
 
         function control(){
             document.querySelector('#control').innerHTML=`
@@ -44,7 +59,7 @@
             </ul>
             `
         }
-        control();
+     
 
         function article(){
             document.querySelector('#article').innerHTML=`
@@ -54,6 +69,30 @@
             </article>
             `
         }
+
+        function reducer(state,article){
+            if (state===undefined){
+                return {
+                 contents:[
+                    {id:1, title:'HTML', desc:'HTML is ...'},
+                    {id:2, title:'CSS', desc:'CSS is ...'}
+                ]   
+                } // 객체들의 배열
+            } //content를 기반으로 글목록을 표현하자. content는 초기값으로 주자.
+        }
+        var store = Redux.createStore(reducer);
+        //store는 전역변수
+        //초기 값은 바로 UI에 표시가 된다.
+
+
+
+
+
+
+
+        subject();
+        toc();
+        control();
         article();
     </script>
 
