@@ -6,26 +6,62 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <h1>WEB</h1>
-        Hello, WEB!
-    </header>
-    <nav>
-        <ol>
-            <li><a href="1.HTML">HTML</a></li>
-            <li><a href="2.CSS">CSS</a></li>
-        </ol>
-    </nav>
-    <article>
-        <div>
+
+    <div id="subject"></div>
+    <div id="toc"></div>
+    <div id="control"></div>
+    <div id="article"></div>
+
+    <script>
+        function subject(){
+            document.querySelector('#subject').innerHTML=`
+            <header>
+                <h1>WEB</h1>
+                Hello, WEB! 
+             </header>
+            `
+        }
+        subject();
+        //재활용 가능하도록 함수화, 즉 부품화 함.
+
+        function TOC(){
+            document.querySelector('#toc').innerHTML=`
+            <nav>
+                <ol>
+                    <li><a href="1.HTML">HTML</a></li>
+                    <li><a href="2.CSS">CSS</a></li>
+                </ol>
+            </nav>
+            `
+        }
+        TOC();
+
+        function control(){
+            document.querySelector('#control').innerHTML=`
             <ul>
                 <li><a href="/create">CREATE</a></li>
                 <li><input type="button" value="DELETE"></input></li>
             </ul>
-        </div>
-        <h2>HTML</h2>
-        HTML is ....
-    </article>
+            `
+        }
+        control();
+
+        function article(){
+            document.querySelector('#article').innerHTML=`
+            <article> 
+                <h2>HTML</h2>
+                HTML is ....
+            </article>
+            `
+        }
+        article();
+    </script>
+
+    
+    
+    
+    
+    
 
     
     
