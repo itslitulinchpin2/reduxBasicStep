@@ -68,10 +68,26 @@
      
 
         function article(){
+            var state=store.getState();
+            var i=0;
+            var aTitle;
+            var aDesc;
+
+            while(i<state.contents.length){
+                if(state.contents[i].id ===state.selected_id){
+                    aTitle=state.contents[i].title
+                    aDesc=state.contents[i].desc
+                    break;   
+                }
+                i=i+1;
+            }
+
+           
+
             document.querySelector('#article').innerHTML=`
             <article> 
-                <h2>HTML</h2>
-                HTML is ....
+                <h2>${aTitle}</h2>
+                ${aDesc}
             </article>
             `
         }
@@ -80,7 +96,7 @@
             
             if (state===undefined){
                 return {
-                selected_id:null,
+                selected_id:1,
                  contents:[
                     {id:1, title:'HTML', desc:'HTML is ...'},
                     {id:2, title:'CSS', desc:'CSS is ...'}
@@ -90,7 +106,6 @@
             var newState;
             if (action.type==='SELECT'){
                 newState=Object.assign({},state,{selected_id:action.id})
-                
             }
             console.log(state,newState)
             return newState;
@@ -99,9 +114,8 @@
         var store = Redux.createStore(reducer);
         //store는 전역변수
         //초기 값은 바로 UI에 표시가 된다.
-
-
-
+        
+        store.subscribe(article)
 
 
 
